@@ -2,13 +2,31 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
 
+const Sentry = require("@sentry/node");
+const { ProfilingIntegration } = require("@sentry/profiling-node");
+
 const express = require('express');
 const fetch = require('node-fetch');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
 const redis = require('redis');
 const crypto = require('crypto');
+
 const app = express();
+
+Sentry.init({
+  dsn: "https://93f444f360fadd089a8e652540caea41@o4504089486360576.ingest.sentry.io/4506689401913344",
+  integrations: [
+    new Sentry.Integrations.Http({ tracing: true }),
+    new Sentry.Integrations.Express({ app }),
+    new ProfilingIntegration(),
+  ],
+  tracesSampleRate: 1.0,
+  profilesSampleRate: 1.0,
+});
+
+app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.tracingHandler());
 
 const { QuickDB } = require("quick.db");
 const db = new QuickDB();
@@ -46,7 +64,7 @@ function GeneratePKCE() {
   }
 }
 
-app.get('/login', (req, res) => {
+app.get('/login', function rootHandler(req, res) {
   if (!req.query.discord) {
     res.send("It seems like you haven't ran the command /verify in your server.")
   }
@@ -70,7 +88,7 @@ app.get('/login', (req, res) => {
   res.redirect(url);
 });
 
-app.get('/callback', async (req, res) => {
+app.get('/callback', async function rootHandler(req, res) {
   const { code, state } = req.query;
 	
   const codeVerifier = req.session.codeVerifier;
@@ -110,13 +128,20 @@ app.get('/callback', async (req, res) => {
   }
 });
 
-app.get('/', async (req, res) => {
+app.get('/', async function rootHandler(req, res) {
   if (!req.query.gamertag || !req.query.discord || !req.session.discord) {
     res.send("Looks like you haven't been through the verification process, do /verify in your server to verify yourself!");
   } else {
     db.set(`${req.query.discord}_verify`, true);
     res.send(`You have successfully been verified. You can now close this tab, and run /verify again.`);
   }
+});
+
+app.use(Sentry.Handlers.errorHandler());
+
+app.use(function onError(err, req, res, next) {
+  res.statusCode = 500;
+  res.end(res.sentry + "\n");
 });
 
 client.commands = new Collection();
