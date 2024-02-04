@@ -11,17 +11,11 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('verify')
 		.setDescription('Verifies ZEBEDEE gamertag and Discord account.')
-		.addStringOption(option =>
-			option.setName('gamertag')
-				.setDescription('The gamertag to verify.')
-				.setRequired(true)),
 	async execute(interaction) {
-		await interaction.reply('Verifying gamertag...');
-
-		const gamertag = interaction.options.getString('gamertag').replace(/\s+/g, '');
-		const data = await ZBD.validateLightningAddress(gamertag + "@zbd.gg");
-		const role = await db.get(interaction.guildId + "_role");
+		await interaction.reply('Checking to see if you went through verification process...');
 		const member = interaction.member;
+		const role = await db.get(interaction.guildId + "_role");
+		const isVerified = await db.get(member.id + "_verify");
 
 		if (!role) {
 			await interaction.editReply("An administrator hasn't configured a role to set when verified.");
@@ -33,9 +27,8 @@ module.exports = {
 			return;
 		}
 
-		if (!data.data.valid) {
-			await interaction.editReply("The gamertag is invalid. Please try again.");
-			return;
+		if (!isVerified) {
+		  await interaction.editReply(`To verify, please visit: https://verifierbot.josemoranurena.tech/?discord=${member.id}.`);
 		}
 
 		await member.roles.add(role.id);
