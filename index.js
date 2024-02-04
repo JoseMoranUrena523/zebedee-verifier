@@ -52,7 +52,8 @@ app.get('/login', (req, res) => {
     res.send("Invalid Discord ID entered.")
   }
 
-  localStorage.setItem("discord", withoutSpaces);
+  req.session.discord = withoutSpaces;
+  req.session.save();
 	
   const clientId = process.env.ZEBEDEE_CLIENT_ID;
   const redirectUri = `${process.env.HOST_URI}/callback`;
@@ -96,7 +97,7 @@ app.get('/callback', async (req, res) => {
     const gamertagData = await gamertagResponse.json();
     console.log(gamertagData);
     const gamertag = gamertagData.data.gamertag;
-    res.redirect(`/?gamertag=${gamertag}&discord=${localStorage.getItem("discord")}`);
+    res.redirect(`/?gamertag=${gamertag}&discord=${req.session.discord}`);
   } catch (err) {
     console.error(err);
     res.status(500).send('Error exchanging code for access token');
@@ -104,11 +105,10 @@ app.get('/callback', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-  if (!req.query.gamertag || !req.query.discord) {
+  if (!req.query.gamertag || !req.query.discord || req.session.discord) {
     res.send("Looks like you haven't been through the verification process, do /verify in your server to verify yourself!");
   } else {
-		db.set(`${req.query.discord}_verify`, true);
-		localStorage.removeItem("discord");
+    db.set(`${req.query.discord}_verify`, true);
     res.send(`You have successfully been verified. You can now close this tab, and run /verify again.`);
   }
 });
