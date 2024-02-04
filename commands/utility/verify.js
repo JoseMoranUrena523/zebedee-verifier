@@ -22,14 +22,14 @@ module.exports = {
 		const data = await ZBD.validateLightningAddress(gamertag + "@zbd.gg");
 		const role = await db.get(interaction.guildId + "_role");
 		const member = interaction.member;
-		
-		if (member.roles.cache.some(roleCheck => roleCheck.name === role.name)) {
-			await interaction.editReply("You are already verified.")
-			return;
-		}
 
 		if (!role) {
 			await interaction.editReply("An administrator hasn't configured a role to set when verified.");
+			return;
+		}
+		
+		if (member.roles.cache.some(roleCheck => roleCheck.name === role.name)) {
+			await interaction.editReply("You are already verified.")
 			return;
 		}
 
