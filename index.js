@@ -50,7 +50,7 @@ app.get('/login', (req, res) => {
   var isOnlyNum = /^\d+$/.test(withoutSpaces);
   if (!isOnlyNum) {
     res.send("Invalid Discord ID entered.")
-	}
+  }
 
   localStorage.setItem("discord", withoutSpaces);
 	
