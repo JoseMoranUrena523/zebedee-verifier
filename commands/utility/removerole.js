@@ -9,7 +9,12 @@ module.exports = {
 		.setDescription('Removes the role set for verifying users.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
 	async execute(interaction) {
-        await db.delete(interaction.guildId + "_role");
-		await interaction.reply('Role has been removed!');
+          if (!db.get(interaction.guildId + "_role")) {
+	    await interaction.reply('You do not have a role set.');
+	    return;
+	  }
+		
+          await db.delete(interaction.guildId + "_role");
+	  await interaction.reply('Role has been removed!');
 	},
 };
