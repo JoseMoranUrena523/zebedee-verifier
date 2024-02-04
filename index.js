@@ -52,8 +52,6 @@ app.get('/login', (req, res) => {
     res.send("Invalid Discord ID entered.")
   }
 
-console.log(withoutSpaces)
-
   req.session.discord = withoutSpaces;
   req.session.save();
 	
@@ -62,8 +60,6 @@ console.log(withoutSpaces)
   const { verifier, challenge } = GeneratePKCE();
   const scope = "user";
   const url = `https://api.zebedee.io/v0/oauth2/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&code_challenge_method=S256&code_challenge=${challenge}&scope=${scope}`;
-
-console.log(`${verifier} ${challenge} ${clientId}`)
 	
   req.session.codeVerifier = verifier;
   res.redirect(url);
@@ -71,6 +67,8 @@ console.log(`${verifier} ${challenge} ${clientId}`)
 
 app.get('/callback', async (req, res) => {
   const { code, state } = req.query;
+  console.log(code + " " + state)
+	
   const codeVerifier = req.session.codeVerifier;
   
   const body = {
