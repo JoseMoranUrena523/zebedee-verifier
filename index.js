@@ -14,7 +14,7 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const redisClient = redis.createClient(process.env.REDIS_URL);
+const redisClient = redis.createClient({ url: process.env.REDIS_URL });
 
 redisClient.connect().catch(console.error)
 
