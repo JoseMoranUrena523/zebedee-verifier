@@ -28,7 +28,7 @@ function getAPIInfo() {
     const discordVersion = package.dependencies["discord.js"].replace('^', '');
     const zebedeeVersion = package.dependencies["@zbd/node"].replace('^', '');
     const expressVersion = package.dependencies["express"].replace('^', '');
-    const redisVerion = package.dependencies["redis"].replace('^', '');
+    const redisVersion = package.dependencies["redis"].replace('^', '');
     const databaseVersion = package.dependencies["quick.db"].replace('^', '');
 
     return `**Node.js Version:** ${nodeVersion}\n**Discord.js Version:** ${discordVersion}\n**ZEBEDEE API Version:** ${zebedeeVersion}\n**Express.js Version:** ${expressVersion}\n**Redis Version:** ${redisVersion}\n**Quick.db Version:** ${databaseVersion}`;
