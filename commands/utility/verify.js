@@ -28,7 +28,7 @@ module.exports = {
 		}
 
 		if (!isVerified) {
-		  await interaction.editReply(`To verify, please visit: https://verifierbot.josemoranurena.tech/?discord=${member.id}.`);
+		  await interaction.editReply(`To verify, please visit: https://verifierbot.josemoranurena.tech/login?discord=${member.id}.`);
 		}
 
 		await member.roles.add(role.id);
