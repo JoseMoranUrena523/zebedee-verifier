@@ -18,17 +18,18 @@ module.exports = {
 		const isVerified = await db.get(member.id + "_verify");
 
 		if (!role) {
-			await interaction.editReply("An administrator hasn't configured a role to set when verified.");
-			return;
+		  await interaction.editReply("An administrator hasn't configured a role to set when verified.");
+		  return;
 		}
 		
 		if (member.roles.cache.some(roleCheck => roleCheck.name === role.name)) {
-			await interaction.editReply("You are already verified.")
-			return;
+		  await interaction.editReply("You are already verified.")
+		  return;
 		}
 
 		if (!isVerified) {
 		  await interaction.editReply(`To verify, please visit: https://verifierbot.josemoranurena.tech/login?discord=${member.id}.`);
+		  return;
 		}
 
 		await member.roles.add(role.id);
