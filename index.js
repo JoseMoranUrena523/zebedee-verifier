@@ -56,11 +56,10 @@ app.get('/login', (req, res) => {
 	
   const clientId = process.env.ZEBEDEE_CLIENT_ID;
   const redirectUri = `${process.env.HOST_URI}/callback`;
-  console.log(redirectUri)
   const { verifier, challenge } = GeneratePKCE();
   const scope = "user";
   const url = `https://api.zebedee.io/v0/oauth2/authorize?client_id=${clientId}&response_type=code&redirect_uri=${redirectUri}&code_challenge_method=S256&code_challenge=${challenge}&scope=${scope}`;
-  console.log(url)
+
   req.session.codeVerifier = verifier;
   res.redirect(url);
 });
@@ -106,7 +105,7 @@ app.get('/callback', async (req, res) => {
 });
 
 app.get('/', async (req, res) => {
-  if (!req.query.gamertag || !req.query.discord || req.session.discord) {
+  if (!req.query.gamertag || !req.query.discord || !req.session.discord) {
     res.send("Looks like you haven't been through the verification process, do /verify in your server to verify yourself!");
   } else {
     db.set(`${req.query.discord}_verify`, true);
