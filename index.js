@@ -158,4 +158,4 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.login(process.env.token);
-app.listen(3000);
+app.listen(process.env.PORT);
