@@ -9,7 +9,7 @@ const db = new QuickDB();
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('verify'),
+		.setName('verify')
 		.setDescription('Verifies ZEBEDEE gamertag and Discord account.'),
 	async execute(interaction) {
 		await interaction.reply('Checking to see if you went through verification process...');
