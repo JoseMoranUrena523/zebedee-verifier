@@ -5,6 +5,8 @@ const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require(
 const express = require('express');
 const fetch = require('node-fetch');
 const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const redis = require('redis');
 const crypto = require('crypto');
 const app = express();
 
@@ -12,8 +14,10 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 app.use(session({
+	store: new RedisStore({ client: redisClient }),
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
