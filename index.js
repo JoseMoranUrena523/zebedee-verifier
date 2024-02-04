@@ -16,8 +16,10 @@ const db = new QuickDB();
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 const redisClient = redis.createClient(process.env.REDIS_URL);
 
+redisClient.connect().catch(console.error)
+
 app.use(session({
-	store: new RedisStore({ client: redisClient }),
+  store: new RedisStore({ client: redisClient }),
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
