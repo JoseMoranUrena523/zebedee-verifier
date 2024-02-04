@@ -53,7 +53,6 @@ app.get('/login', (req, res) => {
   }
 
   req.session.discord = withoutSpaces;
-  req.session.save();
 	
   const clientId = process.env.ZEBEDEE_CLIENT_ID;
   const redirectUri = `${process.env.HOST_URI}/callback`;
@@ -67,7 +66,6 @@ app.get('/login', (req, res) => {
 
 app.get('/callback', async (req, res) => {
   const { code, state } = req.query;
-  console.log(code + " " + state)
 	
   const codeVerifier = req.session.codeVerifier;
   
