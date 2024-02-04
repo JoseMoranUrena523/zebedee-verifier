@@ -12,7 +12,7 @@ module.exports = {
     const role = await db.get(interaction.guildId + "_role");
 
 		if (!role) {
-			await interaction.reply('Role has not been set.');
+			await interaction.reply("An administrator hasn't configured a role to set when verified.");
 			return;
 		}
 
