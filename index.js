@@ -8,8 +8,6 @@ const { ProfilingIntegration } = require("@sentry/profiling-node");
 const express = require('express');
 const fetch = require('node-fetch');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default;
-const redis = require('redis');
 const crypto = require('crypto');
 
 const app = express();
@@ -32,12 +30,8 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-const redisClient = redis.createClient({ url: process.env.REDIS_URL });
-
-redisClient.connect().catch(console.error)
 
 app.use(session({
-  store: new RedisStore({ client: redisClient }),
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
@@ -64,7 +58,7 @@ function GeneratePKCE() {
   }
 }
 
-app.get('/login', function rootHandler(req, res) {
+app.get('/login', async function rootHandler(req, res) {
   if (!req.query.discord) {
     res.send("It seems like you haven't ran the command /verify in your server.")
   }
