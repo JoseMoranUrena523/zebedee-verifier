@@ -138,6 +138,10 @@ app.get('/', async function rootHandler(req, res) {
   }
 });
 
+app.get('privacy-policy', async function rootHandler(req, res) {
+  res.sendFile("privacy-policy.html");
+});
+
 app.use(Sentry.Handlers.errorHandler());
 
 app.use(function onError(err, req, res, next) {
