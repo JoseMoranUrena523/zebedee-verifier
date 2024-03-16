@@ -25,7 +25,7 @@ module.exports = {
 		}
 
 		if (!isVerified) {
-		  await interaction.editReply(`Please click [this link](https://verifierbot.josemoranurena.tech/login?discord=${member.id}) in order to verify your ZEBEDEE account.`);
+		  await interaction.editReply(`Please click [this link](https://zbdverifier.josemoranurena.tech/login?discord=${member.id}) in order to verify your ZEBEDEE account.`);
 		  return;
 		}
 
