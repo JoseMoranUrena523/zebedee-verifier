@@ -139,7 +139,7 @@ app.get('/', async function rootHandler(req, res) {
 });
 
 app.get('/privacy-policy', async function rootHandler(req, res) {
-  res.sendFile("/privacy-policy.html");
+  res.sendFile(path.join(__dirname, 'privacy-policy.html'));
 });
 
 app.use(Sentry.Handlers.errorHandler());
