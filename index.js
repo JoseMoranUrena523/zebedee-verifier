@@ -1,7 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, ActivityType } = require('discord.js');
-const { AutoPoster } = require('topgg-autoposter');
 
 const Sentry = require("@sentry/node");
 const { ProfilingIntegration } = require("@sentry/profiling-node");
@@ -31,12 +30,6 @@ const { QuickDB } = require("quick.db");
 const db = new QuickDB();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
-
-const ap = AutoPoster(process.env.topggToken, client);
-
-ap.on('posted', () => {
-  console.log('Posted stats to Top.gg!')
-})
 
 app.use(session({
   secret: 'keyboard cat',
