@@ -4,7 +4,7 @@
   "description": "A bot that you can use to verify gamertags.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node deploy-commands.js && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jose Moran Urena",
