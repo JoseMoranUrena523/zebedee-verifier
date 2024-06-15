@@ -21,7 +21,6 @@
     "connect-redis": "^7.1.1",
     "redis": "^4.6.12",
     "@sentry/node": "^7.99.0",
-    "@sentry/profiling-node": "^1.3.5",
-    "topgg-autoposter": "^2.0.2"
+    "@sentry/profiling-node": "^1.3.5"
   }
 }
